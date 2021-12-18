@@ -9,8 +9,8 @@ import BoxArray from './components/BoxArray.vue'
   export default {
     data: () => ({
       array:{
-        rightArray:{id1: "boxA", id2: "boxB"},
-        leftArray:{id2: "boxD", id1: "boxC"}
+        rightArray:[{id1: "boxD"}, {id2: "boxE"},{id1: "boxF"},{id2: "boxG"}],
+        leftArray:[{id1: "boxA"}, {id2: "boxB"},{id2: "boxC"}]        
       }
     })
   }

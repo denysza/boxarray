@@ -19,16 +19,19 @@ import * as joint from "jointjs"
     },
     methods:{
       drawBoxes() {
-        let leftArray = Object.entries(this.array.leftArray).map(([key, value]) => ({key,value}));
-        let rightArray = Object.entries(this.array.rightArray).map(([key, value]) => ({key,value}));
+        let leftArray = (this.array.leftArray).map((item) => ({key:Object.keys(item)[0],value:Object.values(item)[0]}));
+        let rightArray = (this.array.rightArray).map((item) => ({key:Object.keys(item)[0],value:Object.values(item)[0]}));
         let maxArrayLength = leftArray.length > rightArray.length ? leftArray.length : rightArray.length;
+        console.log(leftArray, rightArray)
         let width = 0;
         if(window.innerWidth > 800){
           width = window.innerWidth * 0.4;
         }
         else{
           width = window.innerWidth * 0.8;
-        }    
+        }
+        
+        
         let boxwidth = width / 5;
         let boxheight = boxwidth / 3;
         let height = maxArrayLength * (boxheight + 20)
@@ -115,16 +118,16 @@ import * as joint from "jointjs"
         paper.unfreeze();
       }
     },
-    created() {
-      window.addEventListener("resize", this.drawBoxes);
-    },
-    destroyed() {
-     window.removeEventListener("resize", this.drawBoxes);
-    }
+     created() {
+        window.addEventListener("resize", this.drawBoxes);
+     },
+     destroyed() {
+       window.removeEventListener("resize", this.drawBoxes);
+     }
   }
 </script>
 <style>
-  #arrayBox{
-    margin:auto
-  }
+#arrayBox{
+  margin:auto
+}
 </style>
