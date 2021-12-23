@@ -19,10 +19,10 @@ import * as joint from "jointjs"
     },
     methods:{
       drawBoxes() {
-        let leftArray = (this.array.leftArray).map((item) => ({key:Object.keys(item)[0],value:Object.values(item)[0]}));
-        let rightArray = (this.array.rightArray).map((item) => ({key:Object.keys(item)[0],value:Object.values(item)[0]}));
+        let linkArray = this.array;
+        let leftArray = linkArray.map((item)=>(item.leftID)).filter((v, i, a) => a.indexOf(v) === i)
+        let rightArray = linkArray.map((item)=>(item.rightID)).filter((v, i, a) => a.indexOf(v) === i)
         let maxArrayLength = leftArray.length > rightArray.length ? leftArray.length : rightArray.length;
-        console.log(leftArray, rightArray)
         let width = 0;
         if(window.innerWidth > 800){
           width = window.innerWidth * 0.4;
@@ -82,13 +82,13 @@ import * as joint from "jointjs"
           return circle.addTo(graph);
         }
 
-        function link(source, target, vertices) {
+        function link(source, target, priority, vertices) {
           var link = new joint.shapes.standard.Link({
             source: { id: source.id },
             target: { id: target.id },
             attrs: {
               line: {
-                strokeWidth: 2,
+                strokeWidth: priority || 1,
               },
             },
             vertices: vertices || [],
@@ -99,22 +99,16 @@ import * as joint from "jointjs"
         let leftarraybox = [];
         let rightArraybox = [];
         leftArray.map((item, index)=>{
-          let Box = createBox(10, 10 + index * 50, item.value);
+          let Box = createBox(10, 10 + index * 50, item);
           leftarraybox.push(Box)
         })
-        
         rightArray.map((item, index)=>{
-          let Box = createBox(width - 10 -boxwidth , 10 + index * 50, item.value);
+          let Box = createBox(width - 10 -boxwidth , 10 + index * 50, item);
           rightArraybox.push(Box)
         })
-        
-        for(let i = 0; i < leftArray.length; i++) {
-          for(let j = 0; j<rightArray.length; j++){
-            if(leftArray[i].key=== rightArray[j].key){
-              link(leftarraybox[i], rightArraybox[j])
-            }
-          }
-        }
+        linkArray.map((item, index)=>{
+          link(leftarraybox[leftArray.indexOf(item.leftID)], rightArraybox[rightArray.indexOf(item.rightID)], item.priority)
+        })
         paper.unfreeze();
       }
     },
