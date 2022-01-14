@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import $ from "jquery";
 import * as joint from "jointjs";
 export default {
   props: {
